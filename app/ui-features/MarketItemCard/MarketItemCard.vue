@@ -2,11 +2,21 @@
   <UCard>
     <template #header>
       <img
+        v-if="item.imageSource"
         class="aspect-[4/3] w-full object-cover"
-        :src="item.image.source"
-        :alt="item.image.alt"
+        :src="item.imageSource"
+        :alt="item.imageAlt"
         loading="lazy"
       >
+      <div
+        v-else
+        class="flex aspect-[4/3] items-center justify-center bg-muted"
+      >
+        <UIcon
+          name="i-lucide-package"
+          class="size-10 text-muted"
+        />
+      </div>
     </template>
 
     <div class="space-y-2">
@@ -15,7 +25,7 @@
           {{ item.name }}
         </h2>
         <span class="shrink-0 text-sm text-muted">
-          {{ item.rarity }}
+          {{ item.rarity ?? item.category ?? 'Item' }}
         </span>
       </div>
 
@@ -24,16 +34,20 @@
       </p>
 
       <p class="font-semibold">
-        {{ item.price }}
+        {{ priceLabel }}
       </p>
     </div>
   </UCard>
 </template>
 
 <script setup lang="ts">
-import type { MarketItem } from './MarketItem'
+import type { MarketItem } from '~~/shared/types/market-item'
 
-defineProps<{
+const props = defineProps<{
   item: MarketItem
 }>()
+
+const priceLabel = computed(() => props.item.price === null
+  ? 'Preço indisponível'
+  : `${new Intl.NumberFormat('pt-BR').format(props.item.price)} po`)
 </script>

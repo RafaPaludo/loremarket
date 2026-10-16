@@ -12,6 +12,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  runtimeConfig: {
+    open5eApiBaseUrl: 'https://api.open5e.com/v2'
+  },
+
   routeRules: {
     '/': { prerender: true }
   },
