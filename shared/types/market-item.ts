@@ -13,7 +13,7 @@ export interface MarketItem {
   source: string | null
 }
 
-export interface MarketItemsResponse {
+export interface MarketItemCatalogSearchResponse {
   count: number
   page: number
   limit: number

@@ -1,9 +1,9 @@
 import { fetchOpen5eItems } from '../../integrations/open5e/items'
-import { toItemListDto } from './items.dto'
-import { ItemListSchema, ItemQuerySchema } from './items.schema'
+import { toItemCatalogSearchResponseDto } from './item-catalog-search.dto'
+import { ItemCatalogSearchSchema } from './item-catalog-search.schema'
 
-export async function getItemsController(query: unknown) {
-  const parsedQuery = ItemQuerySchema.safeParse(query)
+export async function searchItemCatalogController(query: unknown) {
+  const parsedQuery = ItemCatalogSearchSchema.query.safeParse(query)
 
   if (!parsedQuery.success) {
     throw createError({
@@ -25,5 +25,7 @@ export async function getItemsController(query: unknown) {
     })
   }
 
-  return ItemListSchema.parse(toItemListDto(response, { page, limit }))
+  return ItemCatalogSearchSchema.response.list.parse(
+    toItemCatalogSearchResponseDto(response, { page, limit })
+  )
 }
