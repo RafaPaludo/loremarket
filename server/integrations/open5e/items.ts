@@ -1,32 +1,6 @@
-import { z } from 'zod'
+import { Open5eItemListSchema, type Open5eItemList } from './items.schema'
 
 export type Open5eItemType = 'items' | 'magicitems'
-
-const Open5eListResponseSchema = z.object({
-  count: z.number().int().nonnegative(),
-  next: z.string().nullable(),
-  previous: z.string().nullable(),
-  results: z.array(z.object({
-    key: z.string(),
-    name: z.string(),
-    desc: z.string().nullish(),
-    category: z.object({
-      name: z.string(),
-      key: z.string()
-    }).nullish(),
-    rarity: z.object({
-      name: z.string(),
-      key: z.string()
-    }).nullish(),
-    cost: z.union([z.string(), z.number()]).nullish(),
-    document: z.object({
-      name: z.string().nullish(),
-      display_name: z.string().nullish()
-    }).nullish()
-  }).passthrough())
-})
-
-export type Open5eItemList = z.infer<typeof Open5eListResponseSchema>
 
 export async function fetchOpen5eItems(options: {
   type: Open5eItemType
@@ -41,10 +15,11 @@ export async function fetchOpen5eItems(options: {
       page: options.page,
       limit: options.limit,
       ordering: 'name',
-      search: options.search,
+      // busca correspondência da busca na OpenApi5e
+      name__icontains: options.search,
       category: options.category
     }
   })
 
-  return Open5eListResponseSchema.parse(response)
+  return Open5eItemListSchema.parse(response)
 }

@@ -1,5 +1,5 @@
-import type { Open5eItemList } from '../../integrations/open5e/items'
-import type { Item, ItemList, ItemQuery } from './items.schema'
+import type { Open5eItemList } from '../../integrations/open5e/items.schema'
+import type { Item, ItemCatalogSearchQuery, ItemCatalogSearchResponse } from './item-catalog-search.schema'
 
 export function toItemDto(item: Open5eItemList['results'][number]): Item {
   const price = item.cost == null ? null : Number(item.cost)
@@ -18,10 +18,10 @@ export function toItemDto(item: Open5eItemList['results'][number]): Item {
   }
 }
 
-export function toItemListDto(
+export function toItemCatalogSearchResponseDto(
   response: Open5eItemList,
-  query: Pick<ItemQuery, 'page' | 'limit'>
-): ItemList {
+  query: Pick<ItemCatalogSearchQuery, 'page' | 'limit'>
+): ItemCatalogSearchResponse {
   return {
     count: response.count,
     page: query.page,
