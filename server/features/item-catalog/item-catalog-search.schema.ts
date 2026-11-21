@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+// Esse schema de itens é provisório, ainda estou estudando o formato ideal, isso vai depender muito de quais campos queremos mostrar no card no front
 const itemSchema = z.object({
   id: z.string(),
   name: z.string(),
